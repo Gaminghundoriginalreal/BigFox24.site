@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Service Temporarily Unavailable</title>
+  <meta name="description" content="Service is temporarily unavailable — automatic retry in 30 seconds." />
+  <style>
+    :root{
+      --bg1:#0f1724;
+      --bg2:#071028;
+      --accent:#7c5cff;
+      --glass: rgba(255,255,255,0.06);
+      --muted: rgba(255,255,255,0.7);
+      --card-radius:24px;
+      color-scheme: dark;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;}
+    body{
+      display:flex;align-items:center;justify-content:center;
+      background: radial-gradient(1200px 700px at 10% 10%, rgba(124,92,255,0.10), transparent),
+                  radial-gradient(900px 500px at 90% 90%, rgba(0,200,255,0.06), transparent),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:32px;
+    }
+    .container{
+      width:100%;max-width:980px;
+      display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;
+    }
+    .panel{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:var(--card-radius);
+      padding:34px;border:1px solid rgba(255,255,255,0.04);
+      box-shadow: 0 10px 40px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+      backdrop-filter: blur(8px) saturate(120%);
+    }
+    .left{padding:36px}
+    .logo{
+      display:flex;align-items:center;gap:14px;margin-bottom:22px
+    }
+    .logo svg{width:56px;height:56px}
+    h1{margin:0;font-size:28px;letter-spacing:-0.4px;color:white}
+    p.lead{margin:12px 0 20px;color:var(--muted);font-size:15px;line-height:1.55}
+
+    .info-list{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+    .chip{background:var(--glass);padding:10px 12px;border-radius:12px;font-size:13px;color:var(--muted);border:1px solid rgba(255,255,255,0.02)}
+
+    .right{display:flex;flex-direction:column;gap:18px;align-items:center;justify-content:center;padding:24px}
+    .status-circle{width:160px;height:160px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.04);}
+    .status-circle .code{font-weight:700;font-size:38px;color:var(--accent)}
+    .status-text{color:var(--muted);font-size:13px;margin-top:6px}
+
+    .countdown{
+      width:100%;max-width:360px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.03)
+    }
+    .timer-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .timer{font-weight:700;font-size:20px}
+    .progress{height:10px;background:rgba(255,255,255,0.04);border-radius:999px;overflow:hidden;margin-top:12px}
+    .progress > i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--accent), #23d5ab);border-radius:999px;transition:width 0.2s linear}
+
+    .actions{display:flex;gap:10px;margin-top:10px}
+    .btn{padding:10px 14px;border-radius:10px;font-weight:600;border:0;cursor:pointer}
+    .btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+    .btn.primary{background:linear-gradient(90deg,var(--accent), #23d5ab);color:#04101a}
+
+    footer{grid-column:1/-1;margin-top:18px;color:rgba(255,255,255,0.35);font-size:13px;text-align:center}
+
+    @media (max-width:880px){
+      .container{grid-template-columns:1fr;}
+      .right{order:-1}
+    }
+
+    /* subtle animation */
+    .pulse{animation:pulse 2.6s infinite}
+    @keyframes pulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.02);opacity:0.95}100%{transform:scale(1);opacity:1}}
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="panel left">
+      <div class="logo">
+        <!-- abstract cloud-like logo -->
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <defs>
+            <linearGradient id="g" x1="0" x2="1">
+              <stop offset="0" stop-color="#7c5cff" />
+              <stop offset="1" stop-color="#23d5ab" />
+            </linearGradient>
+          </defs>
+          <circle cx="22" cy="28" r="12" fill="url(#g)" opacity="0.98"></circle>
+          <ellipse cx="38" cy="30" rx="14" ry="10" fill="rgba(255,255,255,0.06)"></ellipse>
+        </svg>
+        <div>
+          <div style="font-weight:700;color:white;font-size:16px">AeroEdge</div>
+          <div style="font-size:13px;color:var(--muted);margin-top:4px">Delivery Network</div>
+        </div>
+      </div>
+
+      <h1>Service temporarily unavailable</h1>
+      <p class="lead">We’re currently performing maintenance and some services are temporarily unreachable. We’re sorry for the interruption — our systems team is on it. This page will automatically retry in <strong id="countdown-text">30</strong> seconds.</p>
+
+      <div class="info-list">
+        <div class="chip">Status: <strong style="margin-left:8px">Down</strong></div>
+        <div class="chip">Incident ID: <strong style="margin-left:8px">AE-2025-0916</strong></div>
+        <div class="chip">Estimated: <strong style="margin-left:8px">—</strong></div>
+      </div>
+
+      <div style="margin-top:20px;font-size:13px;color:var(--muted)">If the issue persists after multiple attempts, contact support at <a href="mailto:support@example.com" style="color:inherit;text-decoration:underline">support@example.com</a>.</div>
+
+      <footer>© <span id="year"></span> AeroEdge — Modern maintenance placeholder page</footer>
+    </section>
+
+    <aside class="panel right">
+      <div class="status-circle pulse" role="img" aria-label="Service down">
+        <div style="text-align:center">
+          <div class="code">502</div>
+          <div class="status-text">Service Unavailable</div>
+        </div>
+      </div>
+
+      <div class="countdown" aria-live="polite">
+        <div class="timer-row">
+          <div>
+            <div style="font-size:12px;color:var(--muted)">Auto-retry</div>
+            <div class="timer" id="timer">30s</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:12px;color:var(--muted)">Last checked</div>
+            <div style="font-weight:600" id="last">—</div>
+          </div>
+        </div>
+
+        <div class="progress" aria-hidden="true">
+          <i id="bar"></i>
+        </div>
+
+        <div class="actions">
+          <button class="btn ghost" id="reloadNow">Reload now</button>
+          <button class="btn primary" id="copyId">Copy incident ID</button>
+        </div>
+      </div>
+
+      <div style="font-size:12px;color:var(--muted);text-align:center">Want a custom maintenance page? Replace this file with your own branding.</div>
+    </aside>
+  </main>
+
+  <script>
+    // Config
+    const START = 30; // seconds
+    let remaining = START;
+    const countdownText = document.getElementById('countdown-text');
+    const timer = document.getElementById('timer');
+    const bar = document.getElementById('bar');
+    const last = document.getElementById('last');
+    const year = document.getElementById('year');
+
+    // set year
+    year.textContent = new Date().getFullYear();
+
+    function updateUI(){
+      countdownText.textContent = remaining;
+      timer.textContent = remaining + 's';
+      const pct = ((START - remaining) / START) * 100;
+      bar.style.width = pct + '%';
+    }
+
+    function setLastChecked(){
+      const d = new Date();
+      last.textContent = d.toLocaleTimeString();
+    }
+
+    // countdown interval
+    updateUI();
+    setLastChecked();
+    const tick = setInterval(()=>{
+      remaining -= 1;
+      if(remaining <= 0){
+        // attempt reload
+        setLastChecked();
+        // Use location.reload to force a fresh fetch
+        location.reload(true);
+        clearInterval(tick);
+        return;
+      }
+      updateUI();
+    },1000);
+
+    // progressive fill animation smoother
+    let animFrame;
+    function animateBar(){
+      const elapsed = START - remaining;
+      const pct = Math.min(100, (elapsed / START) * 100);
+      bar.style.width = pct + '%';
+      animFrame = requestAnimationFrame(animateBar);
+    }
+    animateBar();
+
+    // buttons
+    document.getElementById('reloadNow').addEventListener('click', ()=>{ location.reload(true); });
+    document.getElementById('copyId').addEventListener('click', async ()=>{
+      try{
+        await navigator.clipboard.writeText('AE-2025-0916');
+        const old = document.getElementById('copyId').textContent;
+        document.getElementById('copyId').textContent = 'Copied!';
+        setTimeout(()=> document.getElementById('copyId').textContent = old, 1500);
+      }catch(e){
+        alert('Unable to copy — your browser may block clipboard access. Incident ID: AE-2025-0916');
+      }
+    });
+
+    // accessibility: allow pressing R to reload
+    window.addEventListener('keydown', (e)=>{ if(e.key.toLowerCase()==='r'){ location.reload(true); } });
+  </script>
+</body>
+</html>
